@@ -1,23 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
+import Home from './pages/Home';
+import './styles/main.scss';
 
 function App() {
+  // 테마 상태 관리
+  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
+
+  // 테마 변경 함수
+  const toggleTheme = () => {
+    const newTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(newTheme);
+    localStorage.setItem('theme', newTheme);
+  };
+
+  // 테마 변경 시 body 클래스 변경
+  useEffect(() => {
+    document.body.className = theme;
+  }, [theme]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={`App ${theme}`}>
+      <Header theme={theme} toggleTheme={toggleTheme} />
+      <Home />
     </div>
   );
 }
